@@ -11,6 +11,7 @@ var Csscomb = function(css, params) {
         this.trim(css) != ''
     ) {
         console.log(css);
+        this.parseRules(css);
     }
     else {
         console.log('No CSS on input.');
@@ -35,6 +36,12 @@ Csscomb.prototype = {
             return str.replace(/^\s+|\s+$/g, '');
         }
 
+    },
+
+
+    parseRules: function(code) {
+        var pattern = new RegExp('.[^}|{]*','g');
+        console.log(code.match(pattern));
     }
 }
 
@@ -44,11 +51,18 @@ Csscomb.prototype = {
 
 
 
-var code = '.header {\n' +
+var code = 
+'.header {\n' +
 '    color:#000;\n' +
 '    background:#fff;\n' +
 '    display:block;\n' +
-'    }\n\n\n\n\n';
+'    }\n' +
+'.footer {\n' +
+'    color:#000;\n' +
+'    background:#fff;\n' +
+'    display:block;\n' +
+'    }\n\n\n\n\n' +
+'';
 
 
 var params = {
