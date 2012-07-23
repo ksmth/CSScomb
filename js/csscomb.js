@@ -1,49 +1,76 @@
 /**
- * CSScomb.js version 0.1
+ *
+ * CSScomb.js v0.1
  * Tool for sort CSS code in specific order
+ *
+ * http://csscomb.com/
+ * @author Slava Oliyanchuk (http://miripiruni.org)
+ *
+ */
+(function(){
+/**
+ * Creates a new CSScomb.
+ * @constructor
  * @param {String} css required
  * @param {Boolean} params.log {'log':true} by default log===false
  */
-var Csscomb = function(css, params) {
-    if(
-        css !== undefined &&
-        typeof(css) === 'string' &&
-        this.trim(css) != ''
-    ) {
-        console.log(css);
-        this.parseRules(css);
-    }
-    else {
-        console.log('No CSS on input.');
-    }
-}
+var CSScomb = function(code, params) {
+    this.params = params;
 
-Csscomb.prototype = {
+    return this.init(code, params);
+};
 
-    constructor: Csscomb,
+CSScomb.prototype = {
+
+    constructor : CSScomb,
+
+    isDebug : false,
+
+    init : function(code, params) {
+        var ret;
+
+        this.isDebug = (this.params && this.params.log) || false;
+
+        if(
+            code !== undefined &&
+                typeof(code) === 'string' &&
+                    this.trim(code) !== ''
+        ) {
+            this.isDebug && console.log('Code on input:\n' + code);
+            ret = this.parseRules(code);
+        }
+        else {
+            this.isDebug && console.log('No CSS on input.');
+        }
+
+        return ret;
+    },
 
     /**
      * trim
      * if String.trim is not avaliable then use custom trim
      * @param {String} str
      */
-    trim: function(str) {
+    trim : function(str) {
+
+        var ret;
 
         if(String.trim) {
-            return String.trim(str);
+            ret = String.trim(str);
         }
         else {
-            return str.replace(/^\s+|\s+$/g, '');
+            ret = str.replace(/^\s+|\s+$/g, '');
         }
+        return ret;
 
     },
 
 
     parseRules: function(code) {
         var pattern = new RegExp('.[^}|{]*','g');
-        console.log(code.match(pattern));
+        this.isDebug && console.log(code.match(pattern));
     }
-}
+};
 
 
 
@@ -51,7 +78,7 @@ Csscomb.prototype = {
 
 
 
-var code = 
+var code =
 '.header {\n' +
 '    color:#000;\n' +
 '    background:#fff;\n' +
@@ -64,13 +91,9 @@ var code =
 '    }\n\n\n\n\n' +
 '';
 
-
 var params = {
-    'log': true
-};
+        log : true
+    },
+    c = new CSScomb(code, params);
 
-
-var c = new Csscomb(code, params);
-//c.doit(code, params);
-//c.doit('', params);
-//c.doit('\n', params);
+})();
