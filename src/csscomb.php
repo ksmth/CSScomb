@@ -1249,7 +1249,7 @@ class csscomb{
         foreach ($prop as $k => $val) {
             $index = null; // Дефолтное значение индекса порядка для свойства. Если свойство не знакомо, то index так и останется null.
             preg_match_all('@\s*?(.*?[^:]:).*@ism', $val, $matches, PREG_SET_ORDER);
-            $property = trim($matches[0][1]);
+            $property = preg_replace('/\s+/', '', trim($matches[0][1]));
 
             if (is_array($this->sort_order[0])) { // Если порядок сортировки разбит на группы свойств
 
